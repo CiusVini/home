@@ -350,8 +350,20 @@ async function carregar(silent=false){
     els.subTitle.textContent = 'Painel Executivo';
 
     const ultimoFinanceiro = (data.financeiro && data.financeiro.length) ? data.financeiro[data.financeiro.length - 1] : {};
-    const recebiveisHoje = toNumber(ultimoFinanceiro.total_faturamento ?? ultimoFinanceiro.Total_Faturamento ?? r.carteiras_total);
-    const despesasHoje = toNumber(r.necessidade_hoje);
+    const recebiveisHoje = toNumber(
+      r.recebiveis_hoje ??
+      ultimoFinanceiro.recebiveis_hoje ??
+      ultimoFinanceiro.Recebiveis_Hoje ??
+      ultimoFinanceiro['Recebíveis Hoje'] ??
+      0
+    );
+    const despesasHoje = toNumber(
+      r.despesas_hoje ??
+      ultimoFinanceiro.despesas_hoje ??
+      ultimoFinanceiro.Despesas_Hoje ??
+      ultimoFinanceiro['Despesas Hoje'] ??
+      0
+    );
     const pesoTotal = pesoVendidoMes(data.vendas);
     const custoOperacional = toNumber(r.opex) + toNumber(r.impostos) + toNumber(r.juros_tarifas);
     const custoKg = pesoTotal > 0 ? custoOperacional / pesoTotal : 0;
